@@ -11,6 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post("/refresh", (req, res) => {
+  console.log("Refreshing access token");
   const refreshToken = req.body.refreshToken;
   const spotifyApi = new SpotifyWebApi({
     redirectUri: process.env.REDIRECT_URI,
@@ -21,7 +22,10 @@ app.post("/refresh", (req, res) => {
   spotifyApi
     .refreshAccessToken()
     .then((data) => {
-      console.log(data.body);
+      res.json({
+        accessToken: data.body.accessToken,
+        expiresIn: data.body.expiresIn,
+      });
     })
     .catch(() => {
       res.sendStatus(400);
@@ -30,6 +34,7 @@ app.post("/refresh", (req, res) => {
 
 app.post("/login", (req, res) => {
   const code = req.body.code;
+  //console.log("Received code:", code);
   const spotifyApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
@@ -44,8 +49,8 @@ app.post("/login", (req, res) => {
         expiresIn: data.body.expires_in,
       });
     })
-    .catch(() => {
-      res.sendStatus(400);
+    .catch((err) => {
+      //console.log("Failed to authenticate with Spotify", err);
     });
 });
 
