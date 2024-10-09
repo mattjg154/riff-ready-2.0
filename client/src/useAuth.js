@@ -13,7 +13,7 @@ export default function useAuth(code) {
       return;
     }
     axios
-      .post("http://localhost:5000/login", { code })
+      .post("https://riff-ready-2-0-server.vercel.app/login", { code })
       .then((res) => {
         setAccessToken(res.data.accessToken);
         setRefreshToken(res.data.refreshToken);
@@ -39,7 +39,9 @@ export default function useAuth(code) {
     }
     const interval = setInterval(() => {
       axios
-        .post("http://localhost:5000/refresh", { refreshToken })
+        .post("https://riff-ready-2-0-server.vercel.app/refresh", {
+          refreshToken,
+        })
         .then((res) => {
           setAccessToken(res.data.accessToken);
           setExpiresIn(res.data.expiresIn);
