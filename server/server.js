@@ -53,3 +53,7 @@ app.post("/login", (req, res) => {
       //console.log("Failed to authenticate with Spotify", err);
     });
 });
+
+app.get("/api", (req, res) => {
+  res.send("Hello World!");
+});
