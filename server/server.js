@@ -53,11 +53,11 @@ app.post("/login", (req, res) => {
       //console.log("Failed to authenticate with Spotify", err);
     });
 });
-
-app.get("/api", (req, res) => {
-  res.send("Hello World!");
+app.get("/", (req, res) => {
+  res.send("Express on Vercel");
 });
-
-app.listen(5000);
-
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 module.exports = app;
