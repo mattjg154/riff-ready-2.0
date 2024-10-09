@@ -53,7 +53,3 @@ app.post("/login", (req, res) => {
       //console.log("Failed to authenticate with Spotify", err);
     });
 });
-
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
-});
