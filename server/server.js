@@ -57,3 +57,7 @@ app.post("/login", (req, res) => {
 app.get("/api", (req, res) => {
   res.send("Hello World!");
 });
+
+app.listen(5000);
+
+module.exports = app;
