@@ -3,6 +3,7 @@ const SpotifyWebApi = require("spotify-web-api-node");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const { JSDOM } = require("jsdom");
+const axios = require("axios");
 
 dotenv.config();
 
