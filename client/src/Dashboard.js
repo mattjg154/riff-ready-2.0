@@ -74,7 +74,7 @@ export default function Dashboard({ code }) {
         body: JSON.stringify({
           trackName: currentTrack.name,
           artist: currentTrack.artists[0].name,
-          type: document.getElementById("type").value,
+          type: "chord",
         }),
       }); //parses track name, artist and type (chord/tab)
       const data = await response.text();

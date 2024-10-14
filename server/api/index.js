@@ -74,6 +74,7 @@ app.post("/api/login", (req, res) => {
 });
 
 app.post("/api/tab", async (req, res) => {
+  console.log("Received tab request");
   const body = req.body; //gets the data sent from WebPlayback
   let { trackName } = body;
   const { artist } = body;
