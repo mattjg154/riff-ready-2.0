@@ -7,8 +7,13 @@ const cors = require("cors");
 dotenv.config();
 
 const app = express();
+const corsOptions = {
+  origin: "https://riff-ready-2-0-client.vercel.app", // explicitly allow your frontend origin
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // allowed HTTP methods
+  credentials: true, // allow cookies or authorization headers if needed
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 app.post("/api/refresh", (req, res) => {
