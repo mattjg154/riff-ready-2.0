@@ -21,7 +21,7 @@ export default function useAuth(code) {
         window.history.pushState({}, null, "/");
       })
       .catch((err) => {
-        window.location = "/";
+        console.error(err);
       });
   }, [code]);
 
@@ -47,7 +47,7 @@ export default function useAuth(code) {
           setExpiresIn(res.data.expiresIn);
         })
         .catch(() => {
-          window.location = "/";
+          console.error("Failed to refresh access token.");
         });
     }, (expiresIn - 60) * 1000);
     return () => clearInterval(interval);
