@@ -70,8 +70,8 @@ export default function Dashboard({ code }) {
       const response = await axios.post(
         "https://riff-ready-2-0-server.vercel.app/api/tab",
         {
-          trackName: currentTrack.name,
-          artist: currentTrack.artists[0].name,
+          trackName: currentTrack.title,
+          artist: currentTrack.artist,
           type: "chord",
         }
       );
