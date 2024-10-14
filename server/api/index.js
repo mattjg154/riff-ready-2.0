@@ -51,6 +51,7 @@ app.post("/api/refresh", (req, res) => {
 
 app.post("/api/login", (req, res) => {
   const code = req.body.code;
+  console.log("Received code:", code);
   const spotifyApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
