@@ -4,6 +4,7 @@ import { Container, Form } from "react-bootstrap";
 import SpotifyWebApi from "spotify-web-api-node";
 import TrackSearchResult from "./TrackSearchResult";
 import Player from "./Player";
+import axios from "axios";
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -66,19 +67,15 @@ export default function Dashboard({ code }) {
     //function to request tabs through the proxy
     console.log("Current Track:", currentTrack);
     try {
-      const apiURL = "https://riff-ready-2-0-server.vercel.app/api/tab";
-      const response = await fetch(apiURL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      const response = await axios.post(
+        "https://riff-ready-2-0-server.vercel.app/api/tab",
+        {
           trackName: currentTrack.name,
           artist: currentTrack.artists[0].name,
           type: "chord",
-        }),
-      }); //parses track name, artist and type (chord/tab)
-      const data = await response.text();
+        }
+      );
+      const data = response.data;
       setTabsContent(data); //sets the tabDisplay content to the tab from freetar
       document.getElementById("transpose").innerHTML = 0; //reset the transpose
       //document.getElementById('tabDisplay').scrollBy(0, -1000);//scroll to top of tab
