@@ -55,6 +55,35 @@ export default function Dashboard({ code }) {
       cancel = true;
     };
   }, [search, accessToken]);
+
+  useEffect(() => {
+    if (!currentTrack) return;
+    fetchTabs(currentTrack);
+  }, [currentTrack]);
+
+  const fetchTabs = async (currentTrack) => {
+    //function to request tabs through the proxy
+    try {
+      const apiURL = "https://riff-ready-2-0-server.vercel.app/api/tab";
+      const response = await fetch(apiURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          trackName: current_track.name,
+          artist: current_track.artists[0].name,
+          type: document.getElementById("type").value,
+        }),
+      }); //parses track name, artist and type (chord/tab)
+      const data = await response.text();
+      setTabsContent(data); //sets the tabDisplay content to the tab from freetar
+      document.getElementById("transpose").innerHTML = 0; //reset the transpose
+      //document.getElementById('tabDisplay').scrollBy(0, -1000);//scroll to top of tab
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
+  };
   return (
     <Container className="d-flex flex-column py-2" style={{ height: "100vh" }}>
       <Form.Control
@@ -72,7 +101,19 @@ export default function Dashboard({ code }) {
           />
         ))}
       </div>
-      <div>Bottom</div>
+      <div>
+        {tabsContent !=
+        '{"error":"Internal Server Error","details":"No tab available"}' ? (
+          <div
+            id="tabDisplay"
+            className="Tab"
+            style={{ maxHeight: window.innerHeight }}
+            dangerouslySetInnerHTML={{ __html: tabsContent }}
+          />
+        ) : (
+          <div className="noTab">No tab available for current song</div>
+        )}
+      </div>
       <Player accessToken={accessToken} trackUri={currentTrack?.uri} />
     </Container>
   );
