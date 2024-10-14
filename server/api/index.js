@@ -67,6 +67,7 @@ app.post("/api/login", (req, res) => {
       });
     })
     .catch((err) => {
+      console.log(process.env.REDIRECT_URI);
       console.log(err);
       res.sendStatus(400);
     });
