@@ -64,6 +64,7 @@ export default function Dashboard({ code }) {
 
   const fetchTabs = async (currentTrack) => {
     //function to request tabs through the proxy
+    console.log("Current Track:", currentTrack);
     try {
       const apiURL = "https://riff-ready-2-0-server.vercel.app/api/tab";
       const response = await fetch(apiURL, {
