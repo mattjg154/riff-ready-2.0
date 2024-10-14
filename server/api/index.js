@@ -66,8 +66,8 @@ app.post("/api/login", (req, res) => {
       });
     })
     .catch((err) => {
-      //res.sendStatus(err);
-      res.send(err);
+      console.log(err);
+      res.sendStatus(400);
     });
 });
 
