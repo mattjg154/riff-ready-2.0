@@ -2,6 +2,7 @@ const express = require("express");
 const SpotifyWebApi = require("spotify-web-api-node");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
+const { JSDOM } = require("jsdom");
 
 dotenv.config();
 
@@ -91,14 +92,13 @@ app.post("/api/tab", async (req, res) => {
   let hrefValSet = false;
   let highestRating = "";
   try {
-    const response = await fetch(apiURL, {
-      method: "GET",
+    const response = await axios.get(apiURL, {
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    const data = await response.text(); //gets data from freetar search page
+    const data = response.data; //gets data from freetar search page
     const dom = new JSDOM(data);
     const document = dom.window.document;
     const links = document.querySelectorAll("a").forEach((link) => {
@@ -131,14 +131,13 @@ app.post("/api/tab", async (req, res) => {
     if (hrefValSet) {
       //if a valid link was found
       try {
-        const response2 = await fetch(tabURL, {
-          method: "GET",
+        const response2 = await axios.get(tabURL, {
           headers: {
             "Content-Type": "application/json",
           },
         });
 
-        const data2 = await response2.text();
+        const data2 = response2.data;
         const dom2 = new JSDOM(data2);
         const document2 = dom2.window.document;
         const tab = document2.querySelector(".tab").innerHTML; //gets the html content for the tabs
