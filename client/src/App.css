@@ -1,0 +1,16 @@
+.Tab::-webkit-scrollbar {
+  display: none;
+}
+
+.Tab {
+  text-align: left;
+  font-family: monospace;
+  overflow-y: scroll;
+  max-height: 400px;
+}
+
+.noTab {
+  text-align: left;
+  font-family: monospace;
+  padding-left: 10px;
+}

@@ -5,6 +5,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 import TrackSearchResult from "./TrackSearchResult";
 import Player from "./Player";
 import axios from "axios";
+import "./App.css";
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -106,7 +107,6 @@ export default function Dashboard({ code }) {
           <div
             id="tabDisplay"
             className="Tab"
-            style={{ maxHeight: window.innerHeight }}
             dangerouslySetInnerHTML={{ __html: tabsContent }}
           />
         ) : (
