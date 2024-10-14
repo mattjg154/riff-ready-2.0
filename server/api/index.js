@@ -2,20 +2,32 @@ const express = require("express");
 const SpotifyWebApi = require("spotify-web-api-node");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-const cors = require("cors");
 
 dotenv.config();
 
 const app = express();
-const corsOptions = {
-  origin: "https://riff-ready-2-0-client.vercel.app", // explicitly allow your frontend origin
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // allowed HTTP methods
-  credentials: true, // allow cookies or authorization headers if needed
-};
 
-app.use(cors(corsOptions));
+// Manually set CORS headers for your routes
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://riff-ready-2-0-client.vercel.app"
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+  );
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200); // send OK status for preflight requests
+  }
+  next();
+});
+
 app.use(bodyParser.json());
 
+// Your routes
 app.post("/api/refresh", (req, res) => {
   const refreshToken = req.body.refreshToken;
   const spotifyApi = new SpotifyWebApi({
@@ -38,7 +50,6 @@ app.post("/api/refresh", (req, res) => {
 });
 
 app.post("/api/login", (req, res) => {
-  console.log(req.body);
   const code = req.body.code;
   const spotifyApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
