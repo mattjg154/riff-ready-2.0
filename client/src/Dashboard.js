@@ -14,6 +14,7 @@ export default function Dashboard({ code }) {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [currentTrack, setCurrentTrack] = useState();
+  const [tabsContent, setTabsContent] = useState();
 
   function chooseTrack(track) {
     setCurrentTrack(track);
@@ -71,8 +72,8 @@ export default function Dashboard({ code }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          trackName: current_track.name,
-          artist: current_track.artists[0].name,
+          trackName: currentTrack.name,
+          artist: currentTrack.artists[0].name,
           type: document.getElementById("type").value,
         }),
       }); //parses track name, artist and type (chord/tab)
