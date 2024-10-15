@@ -96,8 +96,13 @@ app.post("/api/tab", async (req, res) => {
     console.log(data);
     const dom = new JSDOM(data);
     const document = dom.window.document;
-    const links = document.querySelectorAll("a");
-    const tabURL = links[4]; //creates link for the tab to be accessed
+    const links = Array.from(document.querySelectorAll("a")).filter(
+      (link) =>
+        link.textContent.toLowerCase().includes(type) &&
+        link.textContent.toLowerCase().includes("tab")
+    );
+
+    const tabURL = links[3]; //creates link for the tab to be accessed
     console.log(tabURL);
     try {
       const response2 = await axios.get(tabURL, {
