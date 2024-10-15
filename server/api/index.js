@@ -96,11 +96,12 @@ app.post("/api/tab", async (req, res) => {
     console.log(data);
     const dom = new JSDOM(data);
     const document = dom.window.document;
-    const links = Array.from(document.querySelectorAll("a")).filter(
-      (link) =>
-        link.textContent.toLowerCase().includes(type) &&
-        link.textContent.toLowerCase().includes("tab")
-    );
+    const links = Array.from(document.querySelectorAll("a"));
+    // .filter(
+    //   (link) =>
+    //     link.textContent.toLowerCase().includes(type) &&
+    //     link.textContent.toLowerCase().includes("tab")
+    // );
     links.forEach((link) => console.log(link.textContent));
     const tabURL = links[3]; //creates link for the tab to be accessed
     try {
