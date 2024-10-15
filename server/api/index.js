@@ -101,9 +101,8 @@ app.post("/api/tab", async (req, res) => {
         link.textContent.toLowerCase().includes(type) &&
         link.textContent.toLowerCase().includes("tab")
     );
-
+    links.forEach((link) => console.log(link.textContent));
     const tabURL = links[3]; //creates link for the tab to be accessed
-    console.log(tabURL);
     try {
       const response2 = await axios.get(tabURL, {
         headers: {
