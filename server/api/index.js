@@ -93,10 +93,12 @@ app.post("/api/tab", async (req, res) => {
     });
 
     const data = response.data; //gets data from freetar search page
+    console.log(data);
     const dom = new JSDOM(data);
     const document = dom.window.document;
     const links = document.querySelectorAll("a");
     const tabURL = links[4]; //creates link for the tab to be accessed
+    console.log(tabURL);
     try {
       const response2 = await axios.get(tabURL, {
         headers: {
