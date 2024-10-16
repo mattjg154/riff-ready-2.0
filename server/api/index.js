@@ -76,25 +76,26 @@ app.post("/api/login", (req, res) => {
       res.sendStatus(400);
     });
 });
-
 app.post("/api/tab", async (req, res) => {
   console.log("Received tab request");
-  const body = req.body; //gets the data sent from WebPlayback
+  const body = req.body; // gets the data sent from WebPlayback
   let { trackName } = body;
   const { artist } = body;
   const { type } = body;
-  trackName = trackName.split("-")[0]; //removes harmful characters
+  trackName = trackName.split("-")[0]; // removes harmful characters
   trackName = trackName.split("(")[0];
   trackName = trackName.split("?")[0];
   const options = {
     args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
     defaultViewport: chrome.defaultViewport,
-    executablePath: chrome.executablePath,
+    executablePath: await chrome.executablePath, // Fix for executable path
     headless: true,
     ignoredHTTPSErrors: true,
   };
+
+  let browser; // Declare browser outside the try block
   try {
-    const browser = await puppeteer.launch(options);
+    browser = await puppeteer.launch(options); // Assign the browser here
     const page = await browser.newPage();
     await page.goto(
       `https://www.ultimate-guitar.com/search.php?search_type=title&value=${artist.toLowerCase()}%20${trackName.toLowerCase()}`
@@ -103,10 +104,14 @@ app.post("/api/tab", async (req, res) => {
       return document.body.innerHTML;
     });
     console.log("Content:", await content);
+    res.status(200).send({ content });
   } catch (err) {
     console.log(err);
+    res.status(500).send({ error: "Failed to retrieve content" });
   } finally {
-    await browser.close();
+    if (browser) {
+      await browser.close(); // Only close if browser was successfully created
+    }
   }
 });
 
