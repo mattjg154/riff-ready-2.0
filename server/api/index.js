@@ -93,17 +93,21 @@ app.post("/api/tab", async (req, res) => {
     headless: true,
     ignoredHTTPSErrors: true,
   };
-  const browser = await puppeteer.launch(options);
-  const page = await browser.newPage();
-  await page.goto(
-    `https://www.ultimate-guitar.com/search.php?search_type=title&value=${artist.toLowerCase()}%20${trackName.toLowerCase()}`
-  );
-  const content = await page.evaluate(() => {
-    return document.body.innerHTML;
-  });
-  console.log(content);
-  await browser.close();
-  res.send(content);
+  try {
+    const browser = await puppeteer.launch(options);
+    const page = await browser.newPage();
+    await page.goto(
+      `https://www.ultimate-guitar.com/search.php?search_type=title&value=${artist.toLowerCase()}%20${trackName.toLowerCase()}`
+    );
+    const content = await page.evaluate(() => {
+      return document.body.innerHTML;
+    });
+    console.log("Content:", await content);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    await browser.close();
+  }
 });
 
 app.get("/", (req, res) => {
