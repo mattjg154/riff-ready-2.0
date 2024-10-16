@@ -4,8 +4,6 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const { JSDOM } = require("jsdom");
 const axios = require("axios");
-const puppeteer = require("puppeteer-core");
-const chrome = require("chrome-aws-lambda");
 
 dotenv.config();
 
@@ -76,45 +74,92 @@ app.post("/api/login", (req, res) => {
       res.sendStatus(400);
     });
 });
+
 app.post("/api/tab", async (req, res) => {
   console.log("Received tab request");
-  const body = req.body; // gets the data sent from WebPlayback
+  const body = req.body; //gets the data sent from WebPlayback
   let { trackName } = body;
   const { artist } = body;
   const { type } = body;
-  trackName = trackName.split("-")[0]; // removes harmful characters
+  trackName = trackName.split("-")[0]; //removes harmful characters
   trackName = trackName.split("(")[0];
   trackName = trackName.split("?")[0];
-  const options = {
-    args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
-    defaultViewport: chrome.defaultViewport,
-    executablePath: await chrome.executablePath, // Fix for executable path
-    headless: true,
-    ignoredHTTPSErrors: true,
-  };
-
-  let browser; // Declare browser outside the try block
-  if (typeof browser === "undefined") {
-    browser = chrome;
-  }
+  const apiURL =
+    "https://freetar.de/search?search_term=" +
+    artist.toLowerCase() +
+    " " +
+    trackName.toLowerCase(); //searches with artist name and song
+  let hrefVal;
+  let hrefValSet = false;
+  let highestRating = "";
   try {
-    browser = await puppeteer.launch(options); // Assign the browser here
-    const page = await browser.newPage();
-    await page.goto(
-      `https://www.ultimate-guitar.com/search.php?search_type=title&value=${artist.toLowerCase()}%20${trackName.toLowerCase()}`
-    );
-    const content = await page.evaluate(() => {
-      return document.body.innerHTML;
+    const response = await axios.get(apiURL, {
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
-    console.log("Content:", await content);
-    res.status(200).send({ content });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ error: "Failed to retrieve content" });
-  } finally {
-    if (browser) {
-      await browser.close(); // Only close if browser was successfully created
+
+    const data = response.data; //gets data from freetar search page
+    const dom = new JSDOM(data);
+    const document = dom.window.document;
+    const links = document.querySelectorAll("a").forEach((link) => {
+      //iterates through each link on the page
+      if (link.href.includes("tab") && link.href.includes(type)) {
+        //if it is a freetar link and is of the correct type tab/chord
+        if (hrefValSet == false) {
+          //if it is the first valid link
+          hrefVal = link.href;
+          hrefValSet = true;
+          highestRating = link.parentNode.parentNode
+            .querySelector(".rating")
+            .textContent.split("(")[1]; //sets highest rating to the amount of ratings it has
+          highestRating = highestRating.split(")")[0]; //gets it to just the number so it can be compared as an int
+        } else {
+          // if it isnt the first valid link
+          let rating = link.parentNode.parentNode
+            .querySelector(".rating")
+            .textContent.split("(")[1]; //set rating to the amount of ratings
+          rating = rating.split(")")[0];
+          if (parseInt(rating) > parseInt(highestRating)) {
+            //compare the current rating with the highest
+            hrefVal = link.href; // and if it has more reviews then it replaces the current link
+            highestRating = rating;
+          }
+        }
+      }
+    });
+    const tabURL = "https://freetar.de" + hrefVal; //creates link for the tab to be accessed
+    if (hrefValSet) {
+      //if a valid link was found
+      try {
+        const response2 = await axios.get(tabURL, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data2 = response2.data;
+        const dom2 = new JSDOM(data2);
+        const document2 = dom2.window.document;
+        const tab = document2.querySelector(".tab").innerHTML; //gets the html content for the tabs
+        res.send(tab); //sends it back to WebPlayback to then be displayed
+      } catch (error) {
+        console.error("Error during proxy request:", error);
+        res
+          .status(500)
+          .json({ error: "Internal Server Error", details: error.message });
+      }
+    } else {
+      //if no valid link found
+      res
+        .status(500)
+        .json({ error: "Internal Server Error", details: "No tab available" });
     }
+  } catch (error) {
+    console.error("Error during proxy request:", error);
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error.message });
   }
 });
 
