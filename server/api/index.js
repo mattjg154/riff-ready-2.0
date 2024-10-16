@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const { JSDOM } = require("jsdom");
 const axios = require("axios");
 const puppeteer = require("puppeteer-core");
+const chrome = require("chrome-aws-lambda");
 
 dotenv.config();
 
@@ -85,9 +86,14 @@ app.post("/api/tab", async (req, res) => {
   trackName = trackName.split("-")[0]; //removes harmful characters
   trackName = trackName.split("(")[0];
   trackName = trackName.split("?")[0];
-  const browser = await puppeteer.launch({
+  const options = {
+    args: [...chrome.args, "--hide-scrollbars", "--disable-web-security"],
+    defaultViewport: chrome.defaultViewport,
+    executablePath: chrome.executablePath,
     headless: true,
-  });
+    ignoredHTTPSErrors: true,
+  };
+  const browser = await puppeteer.launch(options);
   const page = await browser.newPage();
   await page.goto(
     `https://www.ultimate-guitar.com/search.php?search_type=title&value=${artist.toLowerCase()}%20${trackName.toLowerCase()}`
