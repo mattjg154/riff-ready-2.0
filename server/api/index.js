@@ -96,7 +96,7 @@ app.post("/api/tab", async (req, res) => {
     const dom = new JSDOM(data);
     const document = dom.window.document;
     const links = document.querySelector(".LRSRs");
-    console.log(links);
+    console.log(links.innerHTML);
     try {
       const response2 = await axios.get(tabURL, {
         headers: {
