@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const { JSDOM } = require("jsdom");
 const axios = require("axios");
 const puppeteer = require("puppeteer");
+const chromium = require("chrome-aws-lambda");
 
 dotenv.config();
 
@@ -86,8 +87,10 @@ app.post("/api/tab", async (req, res) => {
   trackName = trackName.split("(")[0];
   trackName = trackName.split("?")[0];
   const browser = await puppeteer.launch({
-    headless: true,
-    defaultViewport: null,
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath,
+    headless: chromium.headless,
   });
   const page = await browser.newPage();
   await page.goto(
@@ -98,6 +101,7 @@ app.post("/api/tab", async (req, res) => {
   });
   console.log(content);
   await browser.close();
+  res.send(content);
 });
 
 app.get("/", (req, res) => {
