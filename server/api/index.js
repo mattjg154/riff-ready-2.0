@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const { JSDOM } = require("jsdom");
 const axios = require("axios");
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
 const chromium = require("chrome-aws-lambda");
 
 dotenv.config();
