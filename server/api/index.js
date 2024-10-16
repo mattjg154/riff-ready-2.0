@@ -94,6 +94,9 @@ app.post("/api/tab", async (req, res) => {
   };
 
   let browser; // Declare browser outside the try block
+  if (typeof browser === "undefined") {
+    browser = chrome;
+  }
   try {
     browser = await puppeteer.launch(options); // Assign the browser here
     const page = await browser.newPage();
