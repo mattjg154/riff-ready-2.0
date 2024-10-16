@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const { JSDOM } = require("jsdom");
 const axios = require("axios");
+const puppeteer = require("puppeteer");
 
 dotenv.config();
 
@@ -84,46 +85,19 @@ app.post("/api/tab", async (req, res) => {
   trackName = trackName.split("-")[0]; //removes harmful characters
   trackName = trackName.split("(")[0];
   trackName = trackName.split("?")[0];
-  const apiURL = `https://www.ultimate-guitar.com/search.php?title=${artist.toLowerCase()}+${trackName.toLowerCase()}&page=1&rating%5B0%5D=4&rating%5B1%5D=5&order=myweight`;
-  try {
-    const response = await axios.get(apiURL, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = response.data; //gets data from freetar search page
-    const dom = new JSDOM(data);
-    const document = dom.window.document;
-    const links = document.querySelector(".LRSRs").querySelectorAll("a");
-    for (const link of links) {
-      console.log(link.getAttribute("href"));
-    }
-
-    try {
-      const response2 = await axios.get(tabURL, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data2 = response2.data;
-      const dom2 = new JSDOM(data2);
-      const document2 = dom2.window.document;
-      const tab = document2.querySelector(".OnD3d").innerHTML; //gets the html content for the tabs
-      res.send(tab); //sends it back to WebPlayback to then be displayed
-    } catch (error) {
-      console.error("Error during proxy request:", error);
-      res
-        .status(500)
-        .json({ error: "Internal Server Error", details: error.message });
-    }
-  } catch (error) {
-    console.error("Error during proxy request:", error);
-    res
-      .status(500)
-      .json({ error: "Internal Server Error", details: error.message });
-  }
+  const browser = await puppeteer.launch({
+    headless: true,
+    defaultViewport: null,
+  });
+  const page = await browser.newPage();
+  await page.goto(
+    `https://www.ultimate-guitar.com/search.php?search_type=title&value=${artist.toLowerCase()}%20${trackName.toLowerCase()}`
+  );
+  const content = await page.evaluate(() => {
+    return document.body.innerHTML;
+  });
+  console.log(content);
+  await browser.close();
 });
 
 app.get("/", (req, res) => {
