@@ -6,7 +6,7 @@ const AUTH_URL = `https://accounts.spotify.com/authorize?client_id=98615042f4214
 
 export default function Login() {
   return (
-    <div className="min-h-screen grid grid-cols-[1fr_2fr] grid-rows-2">
+    <div className="min-h-screen grid grid-cols-[1fr_2fr] grid-rows-2 max-h-screen">
       <div className="col-span-1 bg-headers2 flex items-end justify-center">
         <h1 className="text-8xl font-bold text-white z-50">RiffReady</h1>
       </div>
@@ -22,12 +22,20 @@ export default function Login() {
         </p>
       </div>
       <div className="col-span-1 bg-headers2 flex items-start justify-center">
-        <a href={AUTH_URL} className="flex items-center pt-1">
+        <a
+          href={AUTH_URL}
+          className="flex items-center pt-1 hover:scale-105 duration-300"
+        >
           <button className="text-2xl text-white font-bold  ">Login</button>
           <LogIn className="text-white size-8   mt-1"></LogIn>
         </a>
       </div>
-      <div className="col-span-1 bg-bg1"></div>
+      <div className="col-span-1 bg-bg1 flex items-start justify-center">
+        <img
+          src={require("./assets/preview.png")}
+          className="w-7/12 drop-shadow-xl -mt-24 hover:scale-105 duration-300"
+        ></img>
+      </div>
     </div>
   );
 }
