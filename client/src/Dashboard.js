@@ -106,11 +106,11 @@ export default function Dashboard({ code }) {
             />
           ))}
         </div>
-        <div className="max-h-full">
+        <div className="max-h-full flex items-center text-center">
           {tabsContent ? (
             <div
               id="tabDisplay"
-              className="Tab"
+              className="text-left text-text font-mono max-h-full overflow-y-scroll"
               dangerouslySetInnerHTML={{ __html: tabsContent }}
             />
           ) : (
