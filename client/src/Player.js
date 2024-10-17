@@ -10,7 +10,7 @@ export default function Player({ accessToken, trackUri }) {
   return (
     <SpotifyPlayer
       styles={{
-        bgColor: "#E43D12",
+        bgColor: "#E98074",
       }}
       token={accessToken}
       showSaveIcon

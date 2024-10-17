@@ -7,27 +7,27 @@ const AUTH_URL = `https://accounts.spotify.com/authorize?client_id=98615042f4214
 export default function Login() {
   return (
     <div className="min-h-screen grid grid-cols-[1fr_2fr] grid-rows-2">
-      <div className="col-span-1 bg-orange flex items-end justify-center">
+      <div className="col-span-1 bg-headers2 flex items-end justify-center">
         <h1 className="text-8xl font-bold text-white z-50">RiffReady</h1>
       </div>
 
-      <div className="col-span-1 bg-cream flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-bold text-orange mt-4">
+      <div className="col-span-1 bg-bg1 flex flex-col items-center justify-center">
+        <h1 className="text-4xl font-bold text-headers2 mt-4">
           Learning Music by Hearing it.
         </h1>
-        <p className="text-lg font-bold text-orange mt-4">
+        <p className="text-lg font-bold text-headers mt-4">
           - Log in with Spotify Premium
           <br />- Select a song and start playing along with the app
           <br />- Sit back and let the tabs come to you
         </p>
       </div>
-      <div className="col-span-1 bg-orange flex items-start justify-center">
+      <div className="col-span-1 bg-headers2 flex items-start justify-center">
         <a href={AUTH_URL} className="flex items-center pt-1">
           <button className="text-2xl text-white font-bold  ">Login</button>
           <LogIn className="text-white size-8   mt-1"></LogIn>
         </a>
       </div>
-      <div className="col-span-1 bg-cream"></div>
+      <div className="col-span-1 bg-bg1"></div>
     </div>
   );
 }
