@@ -12,10 +12,10 @@ export default function Login() {
       </div>
 
       <div className="col-span-1 bg-bg1 flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-bold text-headers2 mt-4">
+        <h1 className="text-4xl font-bold text-headers2 mt-2">
           Learning Music by Hearing it.
         </h1>
-        <p className="text-lg font-bold text-headers mt-4">
+        <p className="text-lg font-bold text-headers mt-2">
           - Log in with Spotify Premium
           <br />- Select a song and start playing along with the app
           <br />- Sit back and let the tabs come to you
@@ -33,7 +33,7 @@ export default function Login() {
       <div className="col-span-1 bg-bg1 flex items-start justify-center">
         <img
           src={require("./assets/preview.png")}
-          className="w-7/12 drop-shadow-xl -mt-24 hover:scale-105 duration-300"
+          className="w-7/12 drop-shadow-xl -mt-20 hover:scale-105 duration-300"
         ></img>
       </div>
     </div>
