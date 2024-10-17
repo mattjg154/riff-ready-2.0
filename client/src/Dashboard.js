@@ -97,10 +97,7 @@ export default function Dashboard({ code }) {
           onChange={(e) => setSearch(e.target.value)}
           className="bg-headers2 text-text mb-2 focus:bg-headers2"
         />
-        <div
-          className="flex-grow-1 my-2"
-          style={{ overflowY: "auto", position: "absolute", width: "100%" }}
-        >
+        <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
           {searchResults.map((track) => (
             <TrackSearchResult
               key={track.uri}
@@ -114,7 +111,7 @@ export default function Dashboard({ code }) {
             <div
               id="tabDisplay"
               className="Tab"
-              style={{ maxHeight: window.innerHeight - 200 }}
+              style={{ maxHeight: window.innerHeight - 300 }}
               dangerouslySetInnerHTML={{ __html: tabsContent }}
             />
           ) : (
