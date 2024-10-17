@@ -97,7 +97,10 @@ export default function Dashboard({ code }) {
           onChange={(e) => setSearch(e.target.value)}
           className="bg-headers2 text-text mb-2 focus:bg-headers2"
         />
-        <div className="flex-grow-1 my-2 z-20" style={{ overflowY: "auto" }}>
+        <div
+          className="flex-grow-1 my-2"
+          style={{ overflowY: "auto", position: "absolute", width: "100%" }}
+        >
           {searchResults.map((track) => (
             <TrackSearchResult
               key={track.uri}
