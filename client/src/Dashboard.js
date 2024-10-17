@@ -85,35 +85,44 @@ export default function Dashboard({ code }) {
     }
   };
   return (
-    <Container className="d-flex flex-column py-2" style={{ height: "100vh" }}>
-      <Form.Control
-        type="search"
-        placeholder="Search Songs/Artists"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
-        {searchResults.map((track) => (
-          <TrackSearchResult
-            key={track.uri}
-            track={track}
-            chooseTrack={chooseTrack}
-          />
-        ))}
-      </div>
-      <div>
-        {tabsContent !=
-        '{"error":"Internal Server Error","details":"No tab available"}' ? (
-          <div
-            id="tabDisplay"
-            className="Tab"
-            dangerouslySetInnerHTML={{ __html: tabsContent }}
-          />
-        ) : (
-          <div className="noTab">No tab available for current song</div>
-        )}
-      </div>
-      <Player accessToken={accessToken} trackUri={currentTrack?.uri} />
-    </Container>
+    <div className="flex flex-column bg-cream">
+      <Container
+        className="d-flex flex-column py-2"
+        style={{ height: "100vh" }}
+      >
+        <Form.Control
+          type="search"
+          placeholder="Search Songs/Artists"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
+          {searchResults.map((track) => (
+            <TrackSearchResult
+              key={track.uri}
+              track={track}
+              chooseTrack={chooseTrack}
+            />
+          ))}
+        </div>
+        <div>
+          {tabsContent !=
+          '{"error":"Internal Server Error","details":"No tab available"}' ? (
+            <div
+              id="tabDisplay"
+              className="Tab"
+              dangerouslySetInnerHTML={{ __html: tabsContent }}
+            />
+          ) : (
+            <div className="noTab">No tab available for current song</div>
+          )}
+        </div>
+        <Player
+          accessToken={accessToken}
+          trackUri={currentTrack?.uri}
+          style={{ color: "orange" }}
+        />
+      </Container>
+    </div>
   );
 }

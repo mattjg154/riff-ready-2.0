@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import SpotifyPlayer from "react-spotify-web-playback";
+import "./App.css";
 
 export default function Player({ accessToken, trackUri }) {
   const [play, setPlay] = useState(false);
@@ -8,6 +9,9 @@ export default function Player({ accessToken, trackUri }) {
   }, [trackUri]);
   return (
     <SpotifyPlayer
+      styles={{
+        bgColor: "#E43D12",
+      }}
       token={accessToken}
       showSaveIcon
       callback={(state) => {
