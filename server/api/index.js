@@ -75,6 +75,37 @@ app.post("/api/login", (req, res) => {
     });
 });
 
+app.post("/api/guitarTab", async (req, res) => {
+  console.log("Received tab request");
+  const body = req.body; //gets the data sent from WebPlayback
+  let { trackName } = body;
+  const { artist } = body;
+  const { type } = body;
+  trackName = trackName.split("-")[0]; //removes harmful characters
+  trackName = trackName.split("(")[0];
+  trackName = trackName.split("?")[0];
+  const apiURL = `https://www.ultimate-guitar.com/search.php?search_type=title&value=${artist.toLowerCase()}%20${trackName.toLowerCase()}`;
+  try {
+    const response = await axios.get(apiURL, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = response.data; //gets data from freetar search page
+    const dom = new JSDOM(data);
+    const document = dom.window.document;
+    const jsStoreDiv = document.querySelector(".js-store");
+    const dataContent = jsStoreDiv.getAttribute("data-content");
+    console.log(dataContent);
+    res.send(dataContent);
+  } catch (error) {
+    console.error("Error during proxy request:", error);
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: error.message });
+  }
+});
+
 app.post("/api/tab", async (req, res) => {
   console.log("Received tab request");
   const body = req.body; //gets the data sent from WebPlayback
