@@ -112,9 +112,8 @@ export default function Dashboard({ code }) {
               id="tabDisplay"
               className="Tab"
               style={{ maxHeight: window.innerHeight - 300 }}
-            >
-              {tabsContent}
-            </div>
+              dangerouslySetInnerHTML={{ __html: tabsContent }}
+            ></div>
           ) : (
             <div className="noTab">No tab available for current song</div>
           )}

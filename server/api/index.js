@@ -117,8 +117,16 @@ app.post("/api/guitarTab", async (req, res) => {
       const tabParsedData = JSON.parse(tabContent);
       const tabResults =
         tabParsedData.store.page.data.tab_view.wiki_tab.content;
-      console.log(tabResults);
-      res.send(tabResults);
+      const cleanedText = tabResults
+        .replace(/\[tab\]/g, "") // Remove [tab]
+        .replace(/\[\/?ch\]/g, ""); // Remove [ch] and [/ch]
+
+      // Store the cleaned text in an HTML element, preserving line breaks and spaces
+      const htmlOutput = cleanedText.replace(/\n/g, "<br>"); // Replace newlines with <br> for HTML
+
+      // Log or output the result (e.g., assign it to an HTML element)
+      console.log(htmlOutput);
+      res.send(htmlOutput);
     } else {
       res.status(400).json({ error: "No tab found" });
     }
