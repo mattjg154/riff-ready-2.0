@@ -98,7 +98,7 @@ app.post("/api/guitarTab", async (req, res) => {
     const dataContent = jsStoreDiv.getAttribute("data-content");
     const parsedData = JSON.parse(dataContent);
     const allLinks = parsedData.config || [];
-    const p = parsedData.config.store;
+    const p = parsedData.store.page.data.results;
 
     console.log(allLinks);
     console.log(p);
