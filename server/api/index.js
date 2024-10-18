@@ -102,8 +102,24 @@ app.post("/api/guitarTab", async (req, res) => {
       .filter((result) => result.tab_url.includes(type))
       .map((result) => result.tab_url);
 
-    console.log(tabUrls);
-    res.send(tabUrls);
+    if (tabUrls.length > 0) {
+      const tabUrl = tabUrls[0];
+      const tabResponse = await axios.get(tabUrl, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const tabData = tabResponse.data;
+      const tabDom = new JSDOM(tabData);
+      const tabDoc = tabDom.window.document;
+      const tabJsStore = tabDoc.querySelector(".js-store");
+      const tabContent = tabJsStore.getAttribute("data-content");
+      const tabParsedData = JSON.parse(tabContent);
+      console.log(tabParsedData);
+      res.send(tabParsedData);
+    } else {
+      res.status(400).json({ error: "No tab found" });
+    }
   } catch (error) {
     console.error("Error during proxy request:", error);
     res
