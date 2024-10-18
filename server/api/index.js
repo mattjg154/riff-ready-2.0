@@ -99,7 +99,7 @@ app.post("/api/guitarTab", async (req, res) => {
     const parsedData = JSON.parse(dataContent);
     const allLinks = parsedData.config.results || [];
 
-    console.log(allLinks);
+    console.log(parsedData);
     res.send(allLinks);
   } catch (error) {
     console.error("Error during proxy request:", error);
