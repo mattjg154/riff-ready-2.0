@@ -98,10 +98,10 @@ app.post("/api/guitarTab", async (req, res) => {
     const dataContent = jsStoreDiv.getAttribute("data-content");
     const parsedData = JSON.parse(dataContent);
     const results = parsedData.store.page.data.results || [];
-    for (const result of results) {
-      console.log(result.tab_url);
-    }
-    res.send(results);
+    const tabUrls = results.map((result) => result.tab_url);
+
+    console.log(tabUrls);
+    res.send(tabUrls);
   } catch (error) {
     console.error("Error during proxy request:", error);
     res
