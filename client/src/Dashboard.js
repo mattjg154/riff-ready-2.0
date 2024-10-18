@@ -60,8 +60,11 @@ export default function Dashboard({ code }) {
   }, [search, accessToken]);
 
   useEffect(() => {
+    console.log("HEllo");
     if (!currentTrack) return;
-    fetchTabs(currentTrack);
+    else {
+      fetchTabs(currentTrack);
+    }
   }, [currentTrack]);
 
   const fetchTabs = async (currentTrack) => {
