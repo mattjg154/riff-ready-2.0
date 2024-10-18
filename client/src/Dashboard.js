@@ -78,7 +78,7 @@ export default function Dashboard({ code }) {
       );
       const data = response.data;
       setTabsContent(data); //sets the tabDisplay content to the tab from freetar
-      document.getElementById("transpose").innerHTML = 0; //reset the transpose
+      //document.getElementById("transpose").innerHTML = 0; //reset the transpose
       //document.getElementById('tabDisplay').scrollBy(0, -1000);//scroll to top of tab
     } catch (error) {
       console.error("Error during fetch:", error);
@@ -112,8 +112,9 @@ export default function Dashboard({ code }) {
               id="tabDisplay"
               className="Tab"
               style={{ maxHeight: window.innerHeight - 300 }}
-              dangerouslySetInnerHTML={{ __html: tabsContent }}
-            />
+            >
+              {tabsContent}
+            </div>
           ) : (
             <div className="noTab">No tab available for current song</div>
           )}
