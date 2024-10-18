@@ -115,7 +115,7 @@ app.post("/api/guitarTab", async (req, res) => {
       const tabJsStore = tabDoc.querySelector(".js-store");
       const tabContent = tabJsStore.getAttribute("data-content");
       const tabParsedData = JSON.parse(tabContent);
-      const tabResults = tabParsedData.store || [];
+      const tabResults = tabParsedData.store.page.data.tab;
       console.log(tabResults);
       res.send(tabParsedData);
     } else {
