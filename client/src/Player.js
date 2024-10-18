@@ -6,6 +6,7 @@ export default function Player({ accessToken, trackUri }) {
   const [play, setPlay] = useState(false);
   useEffect(() => {
     setPlay(true);
+    console.lgo("hello", trackUri);
   }, [trackUri]);
   return (
     <SpotifyPlayer

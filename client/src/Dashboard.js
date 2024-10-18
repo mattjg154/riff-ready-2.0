@@ -65,7 +65,7 @@ export default function Dashboard({ code }) {
     else {
       fetchTabs(currentTrack);
     }
-  }, [JSON.stringify(currentTrack)]);
+  }, [currentTrack]);
 
   const fetchTabs = async (currentTrack) => {
     //function to request tabs through the proxy
