@@ -98,7 +98,9 @@ app.post("/api/guitarTab", async (req, res) => {
     const dataContent = jsStoreDiv.getAttribute("data-content");
     const parsedData = JSON.parse(dataContent);
     const results = parsedData.store.page.data.results || [];
-    const tabUrls = results.map((result) => result.tab_url);
+    const tabUrls = results
+      .filter((result) => result.tab_url.includes(type))
+      .map((result) => result.tab_url);
 
     console.log(tabUrls);
     res.send(tabUrls);
